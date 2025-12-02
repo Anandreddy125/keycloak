@@ -5,7 +5,8 @@ metadata:
   namespace: keycloak
 type: Opaque
 data:
-  postgres-password: <base64-password>
+  # password = keycloak
+  postgres-password: a2V5Y2xvYWs=
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -44,7 +45,10 @@ spec:
         - name: POSTGRES_USER
           value: keycloak
         - name: POSTGRES_PASSWORD
-          value: keycloak
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: postgres-password
         - name: PGDATA
           value: /var/lib/postgresql/data/pgdata
         volumeMounts:
